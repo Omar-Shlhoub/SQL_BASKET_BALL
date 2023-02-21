@@ -1,0 +1,133 @@
+(Vraag 1.) 
+
+Geef van elk team de teamgegevens en de gegevens van de aanvoerder.
+
+--MYSQL
+
+SELECT *
+FROM team AS t
+JOIN lid AS l ON t.lid_nr_aanvoerder = l.nr
+
+----------------
+
+(Vraag 2.)
+
+Geef van elk team de teamcode en de naam van de aanvoerder.
+
+--MYSQL 
+
+SELECT t.code, l.voorletters, l.tussenvoegsel, l.achternaam
+FROM team AS t
+JOIN lid AS l ON t.lid_nr_aanvoerder = l.nr
+
+----------------
+
+(Vraag 3.)
+
+Geef van elk team uit de klasse B2000 de teamcode en de achternaam van de aanvoerder.
+
+--MYSQL
+
+SELECT t.code, l.achternaam
+FROM team AS t
+JOIN lid AS l ON t.lid_nr_aanvoerder = l.nr
+WHERE t.klasse = 'B2000'
+Vraag 4. 98% van de gebruikers correct (54/55) in gemiddeld 2 pogingen.
+Geef van de leden met boetes het lidnummer, de naam en de boetebedragen die voor hem of haar
+geregistreerd zijn.
+--MYSQL query gemaakt op 14-Nov-2022 om 21:48:00 in 3 pogingen
+SELECT b.lid_nr, l.achternaam, b.bedrag
+FROM boete AS b
+JOIN lid AS l ON b.lid_nr = l.nr
+Vraag 5. 93% van de gebruikers correct (50/54) in gemiddeld 3 pogingen.
+Geef van de vrouwelijke leden uit Volendam het lidnummer, de naam en de boetebedragen die voor
+haar geregistreerd zijn.
+--MYSQL query gemaakt op 14-Nov-2022 om 21:49:55 in 1 poging
+SELECT l.nr, l.achternaam, b.bedrag
+FROM lid AS l
+JOIN boete AS b ON l.nr = b.lid_nr
+WHERE geslacht = 'v'
+AND woonplaats = 'Volendam'
+Vraag 6. 100% van de gebruikers correct (51/51) in gemiddeld 2 pogingen.
+Geef van de leden, die aanvoerder van een team zijn, het lidnummer en de achternaam. Geef ook de
+teamcode en de klasse van het team waarvan hij of zij aanvoerder is.
+--MYSQL query gemaakt op 14-Nov-2022 om 21:53:23 in 1 poging
+SELECT l.nr, l.achternaam, t.code, t.klasse
+FROM lid AS l
+JOIN team AS t ON l.nr = t.lid_nr_aanvoerder
+Vraag 7. 98% van de gebruikers correct (47/48) in gemiddeld 3 pogingen.
+Geef het lidnummer, de achternaam en de woonplaats van elke vrouwelijke speler die niet in Delft
+woonachtig is.
+--MYSQL query gemaakt op 14-Nov-2022 om 21:55:53 in 1 poging
+SELECT l.nr, l.achternaam, l.woonplaats
+FROM lid AS l
+WHERE geslacht = 'v'
+4 of 49
+AND woonplaats <> 'Delft '
+Vraag 8. 96% van de gebruikers correct (45/47) in gemiddeld 2 pogingen.
+Geef de lidnummers van de leden die in de periode 2000-2005 tot de vereniging zijn toegetreden.
+--MYSQL query gemaakt op 14-Nov-2022 om 21:57:42 in 1 poging
+SELECT DISTINCT (nr)
+FROM lid
+WHERE jaartoe BETWEEN 2000
+AND 2005
+Vraag 9. 73% van de gebruikers correct (36/49) in gemiddeld 10 pogingen.
+Geef een lijst van leden met de achternaam, de geboortedatum en de huidige leeftijd.
+--MYSQL query gemaakt op 14-Nov-2022 om 22:08:53 in 5 pogingen
+SELECT nr, achternaam, geboortedatum, FLOOR(
+ (
+ CURDATE() - geboortedatum
+ ) / 10000
+) AS leeftijd
+FROM lid
+Vraag 10. 93% van de gebruikers correct (41/44) in gemiddeld 6 pogingen.
+Geef de achternaam van de leden en het volledig adres. Het adres moet in één kolom komen te staan
+met als kolomkop ‘adres’.
+--MYSQL query gemaakt op 15-Nov-2022 om 21:06:02 in 4 pogingen
+SELECT achternaam, concat(
+ straat, " ", huisnr, " ", postcode,
+ " ", woonplaats
+) AS adres
+FROM lid
+Vraag 11. 88% van de gebruikers correct (36/41) in gemiddeld 7 pogingen.
+Geef een lijst van teams met hun thuis gewonnen wedstrijden. Laat het team zien met daarachter de
+uitslag in één kolom als volgt bijv.: 30 – 24.
+--MYSQL query gemaakt op 15-Nov-2022 om 21:22:37 in 4 pogingen
+SELECT code, naam, concat(w.scorethuis, ' - ', w.scoreuit) AS uitslag
+FROM team AS t
+JOIN wedstrijd AS w ON t.code = w.team_code_thuis
+WHERE w.scorethuis > w.scoreuit
+Vraag 12. 92% van de gebruikers correct (36/39) in gemiddeld 3 pogingen.
+Geef een lijst met boetes die meer dan acht jaar geleden uitgedeeld zijn.
+--MYSQL query gemaakt op 15-Nov-2022 om 22:24:28 in 4 pogingen
+SELECT *
+FROM boete
+WHERE (
+ YEAR(
+ CURDATE()
+ )- YEAR(datumovertreding)
+)> 8
+5 of 49
+Vraag 13. 79% van de gebruikers correct (33/42) in gemiddeld 11 pogingen.
+Geef een lijst van alle vrouwelijke leden, waarbij voorletters, voorvoegsel en naam in één kolom
+verschijnt en het geslacht in de tweede. In die tweede kolom moet het woord ´vrouw´ komen te
+staan. Tip: SQL functie CONCAT_WS is CONCAT met seperator
+--MYSQL query gemaakt op 15-Nov-2022 om 22:37:09 in 9 pogingen
+SELECT CONCAT_WS(
+ ' ', voorletters, tussenvoegsel, achternaam
+) AS naam, 'vrouw' AS geslacht
+FROM lid
+WHERE geslacht = 'v'
+Vraag 14. 84% van de gebruikers correct (32/38) in gemiddeld 8 pogingen.
+Geef een lijst met leden, waarbij voorletters, voorvoegsel en achternaam in één kolom verschijnt en
+het geslacht in de tweede. In die tweede kolom moet het woord ´man´ of ´vrouw´ komen te staan.
+Tip: gebruik CASE WHEN …
+--MYSQL query gemaakt op 15-Nov-2022 om 22:41:35 in 1 poging
+SELECT concat_ws(
+ ' ', voorletters, tussenvoegsel, achternaam
+) AS naam,
+ CASE
+ WHEN geslacht = 'v' THEN 'vrouw'
+ ELSE 'man'
+ END
+FROM lid
