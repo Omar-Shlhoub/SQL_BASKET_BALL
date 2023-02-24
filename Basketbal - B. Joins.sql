@@ -1,6 +1,6 @@
 ----- Basics SQL Querry----- 
 ----- Omar shlhoub -----
---Basket ball database (A.Joins)
+--Basket ball database (B.Joins)
 ----------------------------------------------------------------------------------
 --(Vraag 1.) 
 
