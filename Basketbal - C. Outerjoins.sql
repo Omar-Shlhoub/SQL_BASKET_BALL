@@ -1,3 +1,8 @@
+----- Basics SQL Querry----- 
+----- Omar shlhoub -----
+--Basket ball database (C.Outerjoins)
+----------------------------------------------------------------------------------
+
 --(Vraag 1.) 
 
 --Geef van elk lid het lidnummer, de achternaam en de boetebedragen die voor hem of haar
